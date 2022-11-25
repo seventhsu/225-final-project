@@ -49,4 +49,4 @@ class Graph {
 
     Graph(string & filename);
 
-}
+};
