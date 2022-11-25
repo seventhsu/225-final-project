@@ -1,35 +1,24 @@
 #include "graph.h"
-#include <iterator>
-#include <sstream>
-#include <fstream>
-#include <iostream>
-#include <cstring>
-#include <set>
-#include <map>
-#include <vector>
-#include <algorithm>
-using namespace std;
 
-Graph::Graph(string & filename) {
-    set<string> vertexSet; // this was a class variable previously, but we do not need it to be one
+Graph::Graph(const string& filename) {
+    unordered_set<string> vertexSet; //Stores a set of vertices
     ifstream wf1(filename);
-    string line1;
+    string currentLine;
     // for this first iteration through the file, we want to just find the number of vertices so that we can create our adj matrix
     // this is the same format used in lab_dict
     if (wordsFile.is_open()) {
-        while (getline(wordsFile, line1)) {
-            vector<string> splittedWords;
-            SplitString(line1, '\t', splittedWords);
+        while (getline(wordsFile, currentLine)) {
+            vector<string> splittedWords = SplitString(line1, "\t");
             if (splittedWords.size() != 2) {
                 continue;
             }
             // i'll use a set to store the vertices just for ease as this insert is an O(1) operation
-            vertexSet.insert(splittedWords[0]), vertexSet.insert(splittedWords[1]);
+            vertexSet.insert(vertexSet.begin(), splittedWords.begin(), splittedWords.begin() + 1);
         }
     }
-    int vertexCount = int(vertexSet.size());
+
     // now we create our vector, it will have a default of 0 (all vertices are unconnected at the start)
-    vector<vector<int16_t>> matrix(vertexCount, vector<int16_t>(vertexCount, 0));
+    vector<vector<int16_t>> matrix(vertexSet.size(), vector<int16_t>(vertexSet.size(), 0)); //
     adjMatrix = matrix;
     wf1.close();
     //now, we will populate our map using the set (we map each vertex to a unique index)
@@ -41,7 +30,7 @@ Graph::Graph(string & filename) {
     ifstream wf2(filename);
     string line2;
     if (wf2.is_open()) {
-        while (getine(wf2, line2)) {
+        while (getline(wf2, line2)) {
             vector<string> splittedWords;
             SplitString(line2, '\t', splittedWords);
             if (splittedWords.size() != 2) {
