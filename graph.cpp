@@ -24,7 +24,7 @@ Graph::Graph(string & filename) {
                 continue;
             }
             // i'll use a set to store the vertices just for ease as this insert is an O(1) operation
-            vertexSet.insert(splittedWords[0], splittedWords[1]);
+            vertexSet.insert(splittedWords[0]), vertexSet.insert(splittedWords[1]);
         }
     }
     int vertexCount = int(vertexSet.size());
